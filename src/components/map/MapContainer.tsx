@@ -61,6 +61,29 @@ export default function MapContainer() {
     console.log('_ele_', elevation)
   }, [])
 
+  const onMapClickHandler = useCallback(async (evt) => {
+    const { lngLat, target: map } = evt;
+    const { lng, lat } = lngLat
+
+    try {
+      const tilequeryUrl = `https://api.mapbox.com/v4/mapbox.mapbox-terrain-v2/tilequery/${lng},${lat}.json?layers=contour&access_token=${mapboxToken}`;
+      const response = await fetch(tilequeryUrl);
+      const data = await response.json();
+
+      if (data.features && data.features.length > 0) {
+        // Get the elevation from the first feature
+        const elevation = data.features[0].properties.ele;
+        console.log('ELEVATION', elevation)
+    } else {
+      console.error('no elevation data for this location')
+        // document.getElementById('info').innerHTML = 'No elevation data available for this location';
+    }
+
+    } catch (err) {
+      console.log('err', err)
+    }
+  }, [])
+
   const onMouseMoveHandler = useCallback(async (evt) => {
     const { lngLat, target: map } = evt;
     const { lng, lat } = lngLat
@@ -170,23 +193,23 @@ export default function MapContainer() {
           // width: '100%', 
           // height: '100%'
         }}
-        // mapStyle="mapbox://styles/mapbox/satellite-v9"
+        mapStyle="mapbox://styles/mapbox/satellite-v9"
         // mapStyle="mapbox://styles/mapbox/streets-v9"
-        mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
+        // mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
         terrain={{source: 'mapbox-dem', exaggeration: 1}}
 
         // onMouseMove={onMouseMove}
         // onMouseMove={onMouseMoveHandler}
-        onMouseUp={onMouseMoveHandler}
+        onMouseUp={onMapClickHandler}
         // onMouseMove={mm}
-        onIdle={onIdle}
+        // onIdle={onIdle}
       >
         {/* <MapElevation /> */}
         <Source
           id="mapbox-dem"
           type="raster-dem"
-          url="mapbox://mapbox.terrain-rgb"
-          // url="mapbox://mapbox.mapbox-terrain-dem-v1"
+          // url="mapbox://mapbox.terrain-rgb"
+          url="mapbox://mapbox.mapbox-terrain-dem-v1"
           tileSize={512}
           // maxzoom={14}
           maxzoom={4}
