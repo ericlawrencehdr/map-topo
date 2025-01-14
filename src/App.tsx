@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import './App.scss'
+import MapContainer from './components/map/MapContainer'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-      <div>
-        <h1>Mapbox</h1>
+      <div className='app-container'>
+        <MapContainer />
       </div>
     </>
   )
