@@ -1,6 +1,7 @@
 // TerrainCube.jsx
 import { useEffect, useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
+import { OrbitControls } from '@react-three/drei'
 import Map from 'react-map-gl'
 import * as THREE from 'three'
 
@@ -84,11 +85,25 @@ const TerrainCubeScene = () => {
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
       <TerrainTexture onTextureReady={setMapTexture} />
-      <Canvas camera={{ position: [0, 5, 5] }}>
+      <Canvas 
+        camera={{ 
+          position: [0, 1.5, 2.5], // Moved camera closer
+          fov: 45, // Narrower field of view
+          near: 0.1,
+          far: 1000
+        }}
+      >
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} />
         <directionalLight position={[5, 5, 5]} intensity={1} />
         {mapTexture && <TerrainCube mapTexture={mapTexture} />}
+        <OrbitControls 
+          minDistance={2} 
+          maxDistance={10}
+          enablePan={true}
+          enableZoom={true}
+          enableRotate={true}
+        />
       </Canvas>
     </div>
   )

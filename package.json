@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-three/drei": "^9.121.1",
     "@react-three/fiber": "^8.17.12",
     "@types/mapbox-gl": "^3.4.1",
     "mapbox-gl": "^3.9.2",
